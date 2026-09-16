@@ -6,5 +6,5 @@
 #!tag = mimotion,zepp,步数,定时
 #!type = normal
 
-# cron 每日早上7点执行
-cron "0 7 * * *" script-path=mimotion-step.js,tag=MiMotion,enable=true,timeout=60
+# cron 每日早上7点执行，JS完整raw地址
+cron "0 7 * * *" script-path=https://raw.githubusercontent.com/saga0924/Loon/refs/heads/main/step/mimotion-step.js,tag=MiMotion,enable=true,timeout=60
