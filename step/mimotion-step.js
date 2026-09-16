@@ -1,5 +1,4 @@
-// MiMotion Loon脚本｜原生持久存储，无需BoxJS网页
-const STORE_KEY = "mimotion_config";
+// MiMotion Loon脚本｜cron定时使用，读取插件#!input输入框
 let loginToken, accessToken, userId;
 const huamiBase = "https://account-cn.huami.com";
 
@@ -9,24 +8,15 @@ function sendNotify(title, body) {
   $notification.post(title, body, "");
 }
 
-// 读取本地持久化配置
+// 读取插件页面输入框的账号密码
 async function getConfig() {
-  const raw = await $persistentStore.read(STORE_KEY);
-  if (!raw) {
-    // 首次运行写入空模板
-    const defaultCfg = JSON.stringify({
-      username: "",
-      password: "",
-      targetStep: 10000
-    });
-    await $persistentStore.write(defaultCfg, STORE_KEY);
-    throw new Error("⚠️首次运行！请到Loon【持久存储】填写账号密码");
+  const username = $persistentStore.read("username");
+  const password = $persistentStore.read("password");
+  const targetStep = $persistentStore.read("targetStep");
+  if (!username || !password || !targetStep) {
+    throw new Error("⚠️请到插件页面填写 Zepp账号、密码、目标步数！");
   }
-  const cfg = JSON.parse(raw);
-  if (!cfg.username || !cfg.password || !cfg.targetStep) {
-    throw new Error("账号/密码/目标步数不能为空！");
-  }
-  return cfg;
+  return { username, password, targetStep };
 }
 
 // 获取login_token
