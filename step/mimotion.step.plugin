@@ -1,10 +1,16 @@
 #!name = 蚂蚁森林
-#!desc = Loon原生存储｜复刻mimotion Zepp Life提交步数｜每日7点定时
+#!desc = Loon插件｜Zepp Life提交步数｜每日7点定时｜带手动测试按钮，执行弹窗通知
 #!author = 皮皮皮皮皮皮
 #!system_version = 15
 #!loon_version = 3.5.1(978)
 #!tag = mimotion,zepp,步数,定时
 #!type = normal
+#!input = username,Zepp账号
+#!input = password,Zepp密码,password
+#!input = targetStep,目标步数
 
-# cron 每日早上7点执行，JS完整raw地址
+# cron 每日早上7点自动执行
 cron "0 7 * * *" script-path=https://raw.githubusercontent.com/saga0924/Loon/refs/heads/main/step/mimotion-step.js,tag=MiMotion,enable=true,timeout=60
+
+# generic 手动测试脚本（页面有【执行】按钮，运行完自动推送通知）
+generic script-path=https://raw.githubusercontent.com/saga0924/Loon/refs/heads/main/step/mimotion-test.js,tag=MiMotion-手动测试,enable=true
