@@ -1,0 +1,12 @@
+#!name = 蚂蚁森林-手动测试
+#!desc = 手动测试提交步数，点击执行
+#!author = 皮皮皮皮皮皮
+#!system_version = 15
+#!loon_version = 3.5.1(978)
+#!tag = mimotion,test
+#!type = generic
+#!input = username,Zepp账号
+#!input = password,Zepp密码,password
+#!input = targetStep,目标步数
+
+generic script-path=https://raw.githubusercontent.com/saga0924/Loon/refs/heads/main/step/mimotion-test.js,tag=MiMotion-手动测试,enable=true
