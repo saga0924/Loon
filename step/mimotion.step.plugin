@@ -1,0 +1,10 @@
+#!name = 蚂蚁森林
+#!desc = Loon原生存储｜复刻mimotion Zepp Life提交步数｜每日7点定时
+#!author = 皮皮皮皮皮皮
+#!system_version = 15
+#!loon_version = 3.5.1(978)
+#!tag = mimotion,zepp,步数,定时
+#!type = normal
+
+# cron 每日早上7点执行
+cron "0 7 * * *" script-path=mimotion-step.js,tag=MiMotion,enable=true,timeout=60
