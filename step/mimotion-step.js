@@ -1,20 +1,21 @@
-// MiMotion Loon脚本｜cron定时使用，读取插件#!input输入框
+// MiMotion Cron定时脚本，带系统通知
 let loginToken, accessToken, userId;
 const huamiBase = "https://account-cn.huami.com";
 
-// 通知推送
+// 通知函数
 function sendNotify(title, body) {
   console.log(`【${title}】${body}`);
-  $notification.post(title, body, "");
+  // Loon通知：标题，副标题，内容
+  $notification.post(title, "MiMotion步数任务", body);
 }
 
-// 读取插件页面输入框的账号密码
+// 读取插件#!input输入框配置
 async function getConfig() {
   const username = $persistentStore.read("username");
   const password = $persistentStore.read("password");
   const targetStep = $persistentStore.read("targetStep");
   if (!username || !password || !targetStep) {
-    throw new Error("⚠️请到插件页面填写 Zepp账号、密码、目标步数！");
+    throw new Error("请到插件页面填写 Zepp账号、密码、目标步数！");
   }
   return { username, password, targetStep };
 }
@@ -25,7 +26,7 @@ async function getLoginToken(cfg) {
     url: `${huamiBase}/v1/client/login`,
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "      "Content-Type": "application/x-www-form-urlencoded",
       "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16 like Mac OS X) AppleWebKit/605.1.15"
     },
     body: `account=${encodeURIComponent(cfg.username)}&password=${encodeURIComponent(cfg.password)}&client_id=huawei&grant_type=password`
@@ -75,7 +76,7 @@ async function submitStep(cfg) {
   const resp = await $http.post(req);
   const res = JSON.parse(resp.body);
   if(res.code === 200) {
-    sendNotify("MiMotion✅提交成功", `本次提交步数：${cfg.targetStep}`);
+    sendNotify("✅提交成功", `本次提交步数：${cfg.targetStep}`);
   } else {
     throw new Error(`提交接口返回:${res.message}`);
   }
@@ -88,7 +89,7 @@ async function submitStep(cfg) {
     await getAccessToken();
     await submitStep(cfg);
   } catch(e) {
-    sendNotify("MiMotion❌执行失败", String(e.message));
+    sendNotify("❌执行失败", String(e.message));
     console.error("错误详情", e);
   } finally {
     $done();
