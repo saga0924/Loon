@@ -1,8 +1,0 @@
-#!name=出去走走 · 抓包V4 (临时)
-#!desc=临时诊断: 记录镜像站完整请求头和页面下发的 Cookie, 用来对比浏览器与脚本提交的差异. 抓完可删. 只记录不修改.
-#!author=豆包
-#!version=4.0.0
-
-[Script]
-http-request ^http:\/\/8\.140\.250\.130\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture3.js,tag=抓包V4·请求,timeout=30,requires-body=true
-http-response ^http:\/\/8\.140\.250\.130\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture3.js,tag=抓包V4·响应Cookie,timeout=30,requires-body=true
