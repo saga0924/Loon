@@ -1,0 +1,11 @@
+#!name=出去走走 · 提交抓包 (临时)
+#!desc=临时工具: 你在浏览器手动提交一次, 它把真实提交接口记到 Loon 日志里. 抓完就可以删除. 只记录不修改任何请求.
+#!author=豆包
+#!version=1.0.0
+
+[Script]
+http-request ^http:\/\/8\.140\.250\.130\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture.js,tag=抓包·镜像站HTTP,timeout=30
+http-request ^https:\/\/(wzz\.wangzouzou\.com|m\.cqzz\.top|www\.cqzz\.top|cqzz\.top)\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture.js,tag=抓包·官方域名,timeout=30
+
+[MITM]
+hostname = %APPEND% wzz.wangzouzou.com, m.cqzz.top, www.cqzz.top, cqzz.top
