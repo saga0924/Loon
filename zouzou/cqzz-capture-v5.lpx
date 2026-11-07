@@ -1,0 +1,8 @@
+#!name=出去走走 · 抓包V5 (临时)
+#!desc=临时诊断: 记录镜像站全部请求, 以及 king 接口和页面的响应体, 用来定位 Authorization 令牌来源. 抓完可删. 只记录不修改.
+#!author=豆包
+#!version=5.0.0
+
+[Script]
+http-request ^http:\/\/8\.140\.250\.130\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture4.js,tag=抓包V5·请求,timeout=30,requires-body=true
+http-response ^http:\/\/8\.140\.250\.130\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture4.js,tag=抓包V5·响应,timeout=30,requires-body=true
