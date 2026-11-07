@@ -1,0 +1,7 @@
+#!name=出去走走 · 抓包V6 (临时)
+#!desc=临时诊断: 抓到提交请求时直接弹通知显示 phone/num/令牌摘要, 不用再翻日志. 抓完可删. 只记录不修改.
+#!author=豆包
+#!version=6.0.0
+
+[Script]
+http-request ^http:\/\/8\.140\.250\.130\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/zouzou/capture5.js,tag=抓包V6·请求,timeout=30,requires-body=true
