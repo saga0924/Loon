@@ -214,6 +214,18 @@ function extractFormhash(html) {
     return null;
 }
 
+function diagResp(tag, resp) {
+    const b = (resp && resp.body) || "";
+    const marks = [];
+    if (b.indexOf("formhash") >= 0) marks.push("含formhash字样");
+    if (extractOO(b)) marks.push("WAF挑战页");
+    if (b.indexOf("滑动") >= 0 || b.toLowerCase().indexOf("captcha") >= 0) marks.push("含验证字样");
+    if (b.indexOf("erling_qd") >= 0) marks.push("签到页内容");
+    if (/您需要先登录/.test(b)) marks.push("未登录");
+    if (b.indexOf("mod=logging") >= 0) marks.push("含登录入口");
+    log("[诊断] " + tag + ": HTTP " + (resp && resp.status) + ", " + b.length + " 字节, " + (marks.length ? marks.join(" / ") : "无特征标记"));
+}
+
 async function refreshFormhash(cookie) {
     // 返回 { cookie, formhash, loginRequired }
     let loginRequired = false;
@@ -222,6 +234,7 @@ async function refreshFormhash(cookie) {
     let resp = await httpGet(SIGN_PAGE, navHeaders(cookie));
     cookie = mergeSetCookie(cookie, resp.headers);
     noteLogin(resp.body);
+    diagResp("签到页", resp);
     let fh = extractFormhash(resp.body);
     if (fh) return { cookie: cookie, formhash: fh, loginRequired: false };
 
@@ -245,6 +258,7 @@ async function refreshFormhash(cookie) {
                 const resp2 = await httpGet(SIGN_PAGE, navHeaders(cookie));
                 cookie = mergeSetCookie(cookie, resp2.headers);
                 noteLogin(resp2.body);
+                diagResp("解算后重试", resp2);
                 fh = extractFormhash(resp2.body);
                 if (fh) return { cookie: cookie, formhash: fh, loginRequired: false };
             } else {
@@ -258,6 +272,7 @@ async function refreshFormhash(cookie) {
     const resp3 = await httpGet(BASE + "/forum.php", navHeaders(cookie));
     cookie = mergeSetCookie(cookie, resp3.headers);
     noteLogin(resp3.body);
+    diagResp("论坛首页", resp3);
     fh = extractFormhash(resp3.body);
     return { cookie: cookie, formhash: fh, loginRequired: loginRequired };
 }
