@@ -11,5 +11,8 @@ erronly = switch,false,tag=仅失败时通知,desc=打开后只有签到失败�
 http-request ^https:\/\/www\.right\.com\.cn\/forum\/ script-path=https://raw.githubusercontent.com/saga0924/Loon/main/Enshan/enshan.js, requires-body=false, tag=恩山Cookie抓取, enable={capture}
 cron "*/10 8-10 * * *" script-path=https://raw.githubusercontent.com/saga0924/Loon/main/Enshan/enshan.js, tag=恩山每日签到, argument="erronly={erronly}"
 
+[Rule]
+DOMAIN,www.right.com.cn,DIRECT
+
 [MITM]
 hostname = www.right.com.cn
