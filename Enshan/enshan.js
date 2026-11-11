@@ -22,7 +22,7 @@ function storeWrite(v) { $persistentStore.write(v, STORE_KEY); }
 
 function httpGet(url, headers) {
     return new Promise((resolve, reject) => {
-        $httpClient.get({ url: url, headers: headers, timeout: 30 }, (err, resp, data) => {
+        $httpClient.get({ url: url, headers: headers }, (err, resp, data) => {
             if (err) reject(new Error(String(err)));
             else resolve({ status: resp.status, headers: resp.headers || {}, body: data || "" });
         });
@@ -30,7 +30,7 @@ function httpGet(url, headers) {
 }
 function httpPost(url, headers, body) {
     return new Promise((resolve, reject) => {
-        $httpClient.post({ url: url, headers: headers, body: body, timeout: 30 }, (err, resp, data) => {
+        $httpClient.post({ url: url, headers: headers, body: body }, (err, resp, data) => {
             if (err) reject(new Error(String(err)));
             else resolve({ status: resp.status, headers: resp.headers || {}, body: data || "" });
         });
