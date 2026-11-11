@@ -13,7 +13,7 @@ const SIGN_URL = BASE + "/plugin.php?id=erling_qd:action&action=sign";
 const CREDIT_URL = BASE + "/home.php?mod=spacecp&ac=credit&showcredit=1";
 const STORE_KEY = "enshan_cookie";
 const NAME = "恩山签到";
-const UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1";
+const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 function log(msg) { console.log(msg); }
 function notify(subtitle, body) { $notification.post(NAME, subtitle || "", body || ""); }
@@ -40,9 +40,10 @@ function httpPost(url, headers, body) {
 function navHeaders(cookie) {
     return {
         "User-Agent": UA,
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "zh-CN,zh;q=0.9",
-        "Referer": SIGN_PAGE,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+        "Cache-Control": "max-age=0",
+        "Upgrade-Insecure-Requests": "1",
         "Cookie": cookie
     };
 }
@@ -286,6 +287,10 @@ async function doSign(cookie, formhash) {
         "X-Requested-With": "XMLHttpRequest",
         "Origin": "https://www.right.com.cn",
         "Referer": SIGN_PAGE,
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Pragma": "no-cache",
         "Cookie": cookie
     };
     const resp = await httpPost(SIGN_URL, headers, "formhash=" + encodeURIComponent(formhash));
