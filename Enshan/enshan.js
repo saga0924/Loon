@@ -328,14 +328,6 @@ async function getCoin(cookie) {
 
 function sendMsg(message) {
     if (!message) return;
-    // 仅失败时通知：erronly 未被明确关闭（false/"false"）时，内容含 ❌/⚠️ 才发通知，否则只记日志
-    const errVal = typeof $argument === "object" && !!$argument ? $argument.erronly : undefined;
-    log("[自检] erronly 参数 = " + JSON.stringify(errVal));
-    const errOnly = errVal !== false && errVal !== "false";
-    if (errOnly && message.indexOf("❌") < 0 && message.indexOf("⚠️") < 0) {
-        log("\n" + NAME + "（仅失败通知模式，跳过本次通知）\n" + message);
-        return;
-    }
     notify("", message);
 }
 
