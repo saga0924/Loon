@@ -1628,8 +1628,10 @@ function redactSensitive(text) {
 
 async function sendMsg(message) {
     if (!message) return;
-    // [豆包补丁] 仅失败时通知：插件开关 erronly 打开时，汇总含 ❌/⚠️ 才发通知，否则只记日志
-    const errOnly = typeof $argument === "object" && !!$argument && ($argument.erronly === true || $argument.erronly === "true");
+    // [豆包补丁] 仅失败时通知：erronly 未被明确关闭（false/"false"）时，汇总含 ❌/⚠️ 才发通知，否则只记日志；同时把收到的参数值打进日志便于自检
+    const errVal = typeof $argument === "object" && !!$argument ? $argument.erronly : undefined;
+    $.log(`[补丁] erronly 参数 = ${JSON.stringify(errVal)}`);
+    const errOnly = errVal !== false && errVal !== "false";
     if (errOnly && !message.includes("❌") && !message.includes("⚠️")) {
         $.log(`\n${$.name}（仅失败通知模式，跳过本次通知）\n${message}`);
         return;
