@@ -1,0 +1,39 @@
+# Muse - Loon 分流规则
+# 适用: Loon iOS / tvOS
+# 用法 1: Loon > 配置 > 规则 > 右上角 + > 添加远程规则, 粘贴本文件链接
+# 用法 2: Loon > 配置 > 编辑配置, 把下面规则粘贴到 [Rule] 段里
+# 注意: 把 PROXY 换成你自己的策略组名, 比如 节点选择、香港节点、美国节点
+# 如果你的策略组就叫 PROXY, 不用改, 直接用
+# 规则从上到下匹配, Muse 相关放前面
+
+# --- Muse 主站 / App ---
+DOMAIN-SUFFIX,muse.ai,PROXY
+DOMAIN-SUFFIX,meta.ai,PROXY
+DOMAIN-SUFFIX,api.meta.ai,PROXY
+
+# --- Meta 账号 / 登录 / 同步 ---
+DOMAIN-SUFFIX,meta.com,PROXY
+DOMAIN-SUFFIX,facebook.com,PROXY
+DOMAIN-SUFFIX,fb.com,PROXY
+DOMAIN-SUFFIX,fbcdn.net,PROXY
+DOMAIN-SUFFIX,graph.facebook.com,PROXY
+DOMAIN-SUFFIX,accountscenter.facebook.com,PROXY
+
+# --- Muse 里常用的连接服务, 走代理更稳 ---
+# 如果你这些服务本来就有自己的规则, 可以删掉下面这组
+DOMAIN-SUFFIX,google.com,PROXY
+DOMAIN-SUFFIX,googleapis.com,PROXY
+DOMAIN-SUFFIX,gmail.com,PROXY
+DOMAIN-SUFFIX,spotify.com,PROXY
+DOMAIN-SUFFIX,github.com,PROXY
+DOMAIN-SUFFIX,notion.so,PROXY
+DOMAIN-SUFFIX,notion.com,PROXY
+
+# --- WhatsApp 里的 Muse ---
+DOMAIN-SUFFIX,whatsapp.com,PROXY
+DOMAIN-SUFFIX,whatsapp.net,PROXY
+
+# --- 可选: Instagram / Threads, Muse 也会连 ---
+# 不需要就删掉这两行
+DOMAIN-SUFFIX,instagram.com,PROXY
+DOMAIN-SUFFIX,threads.net,PROXY
