@@ -1,16 +1,12 @@
 /**
- * BaiduDirect for Loon (Custom by JavaScript)
- * 由 BaiduDirect.lua.lua 改写，行为与 Lua 版一致：
- * 握手时向代理 153.3.237.117:443 发送自定义 CONNECT 请求，
- * Host 写死 153.3.236.22:443，带 X-T5-Auth 和百度 App 的 User-Agent，
- * 代理返回第一包后即认为握手成功，之后数据直接透传。
+ * BaiduDirect for Loon (Custom by JavaScript) v2
+ * 按论坛实测配置改写：服务器 180.101.50.208:443，
+ * CONNECT 请求行在目标地址后加 @dm.wo.com.cn:18080，
+ * 不带 Host 头（Del Host），不带自定义请求头、不带 TLS。
+ * Muse 已实测：该握手返回 200，隧道内打开 example.com / 苹果官网均正常。
  *
  * Loon 节点写法（[Proxy] 段）：
- * 百度直连 = custom,153.3.237.117,443,script-path=BaiduDirect-loon.js
- *
- * 注意：CONNECT 行按 Lua 原版保留“端口后无空格直接接 HTTP/1.1”的写法，
- * 这是给网关看的。若测试不通，把下面 header 里
- * ${conPort}HTTP/1.1 改成 ${conPort} HTTP/1.1（加一个空格）再试。
+ * 百度直连 = custom,180.101.50.208,443,script-path=https://raw.githubusercontent.com/saga0924/Loon/main/BaiduDirect-loon.js
  */
 
 let STATUS_INVALID = -1
@@ -22,7 +18,7 @@ var httpStatus = STATUS_INVALID
 function tunnelDidConnected() {
     console.log($session)
     if ($session.proxy.isTLS) {
-        // https 代理走 TLS 握手，握手完成后再发 CONNECT，见 tunnelTLSFinished
+        // 本节点不启用 TLS，正常不会走到这里
     } else {
         _writeHttpHeader()
         httpStatus = STATUS_CONNECTED
@@ -38,7 +34,7 @@ function tunnelTLSFinished() {
 
 function tunnelDidRead(data) {
     if (httpStatus == STATUS_WAITRESPONSE) {
-        // 与 Lua 版一致：第一包响应即视为握手成功，不检查状态码
+        // 第一包响应即视为握手成功，不检查状态码
         console.log("baidu direct handshake success")
         httpStatus = STATUS_FORWARDING
         $tunnel.established($session)
@@ -62,11 +58,11 @@ function tunnelDidClose() {
     return true
 }
 
-// 发送与 Lua 版 wa_lua_on_handshake_cb 完全一致的 CONNECT 请求
+// CONNECT 目标地址@dm.wo.com.cn:18080，无 Host 头
 function _writeHttpHeader() {
     let conHost = $session.conHost
     let conPort = $session.conPort
 
-    var header = `CONNECT ${conHost}:${conPort}HTTP/1.1\r\nHost: 153.3.236.22:443\r\nUser-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1 baiduboxapp\r\nProxy-Connection: Keep-Alive\r\nX-T5-Auth: 683556433\r\n\r\n`
+    var header = `CONNECT ${conHost}:${conPort}@dm.wo.com.cn:18080 HTTP/1.1\r\n\r\n`
     $tunnel.write($session, header)
 }
