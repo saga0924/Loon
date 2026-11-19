@@ -1,0 +1,26 @@
+#!name = 🥕emos 自动签到
+#!desc = emos.best 每日自动签到，赚萝卜、看修仙进度。首次使用先开启 Token 获取开关，登录 emos 并刷新页面捕获 Token，之后每天定时自动签到。
+#!author = Myles
+#!homepage = https://emos.best
+#!source = a473719b6b80b6b93a4acece2e19266c9453375768d1c4236f0088cb2b4742db
+#!system = iOS,iPadOS
+#!loon_version = 3.5.1(983)
+#!date = 2026-11-20
+#!tag = 签到,工具
+#!type = normal
+
+[Argument]
+comment = input,"签到,我要🥕",type=string,tag=签到文案,desc=签到时发送的文案，多个用逗号分隔随机选用
+ErrorNotify_emos = switch,false,type=boolean,tag=仅失败时通知,desc=开启后仅在签到失败时通知
+getToken = switch,true,type=boolean,tag=Token 获取开关,desc=开启后访问 emos 时自动捕获 Token，捕获成功后可关闭
+cronExpression = input,"0 8 * * *",type=string,tag=执行时间,desc=每天签到时间，Cron 表达式
+
+[Rule]
+DOMAIN,emos.best,PROXY
+
+[Script]
+request if ${url} ~= /^https:\/\/emos\.best\/api\// then script("https://raw.githubusercontent.com/saga0924/Loon/main/emos.js", {${comment}, ${ErrorNotify_emos}}) with enable=${getToken}, tag="emos Token 捕获"
+cron ${cronExpression} then script("https://raw.githubusercontent.com/saga0924/Loon/main/emos.js", {${comment}, ${ErrorNotify_emos}}) with timeout=90, tag="emos 每日签到"
+
+[Mitm]
+hostname = emos.best
