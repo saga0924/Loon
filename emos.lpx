@@ -15,7 +15,7 @@ getToken = switch,true,type=boolean,tag=🍪获取 emos token,desc=是否启用�
 checkin = switch,true,type=boolean,tag=🥕emos签到,desc=是否启用此处修改
 comment = input,"签到,我要🥕",type=string,tag=💬自定义签到文案库,desc=多个文案用逗号分隔，随机选用
 ErrorNotify_emos = switch,false,type=boolean,tag=💬仅失败时通知,desc=开启后仅在出错时弹窗，成功和已签到只记日志
-cronExpression = input,"0 10 * * *",type=string,tag=⏰签到时间（建议错开高峰期）,desc=可手动更改脚本运行时间
+cronExpression = input,"1 0 * * *",type=string,tag=⏰签到时间（建议错开高峰期）,desc=可手动更改脚本运行时间
 
 [Rule]
 DOMAIN,emos.best,PROXY
