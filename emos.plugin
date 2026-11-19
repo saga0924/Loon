@@ -1,0 +1,28 @@
+#!name = 🥕emos
+#!desc = 获取 emos token，并每天自动执行带有随机文案的签到。为避免服务器压力，不建议设置在高峰时间执行。
+#!author = Myles
+#!homepage = https://emos.best/#/home
+#!icon = https://raw.githubusercontent.com/saga0924/Loon/main/emos-icon.png
+#!source = a473719b6b80b6b93a4acece2e19266c9453375768d1c4236f0088cb2b4742db, d43010e14f0f8409a5859aa05814b7015da7fb6a9857e34163407365bcd895d4
+#!system = iOS,iPadOS
+#!loon_version = 3.5.1(983)
+#!date = 2026-11-20
+#!tag = 签到,工具
+#!type = normal
+
+[Argument]
+getToken = switch,true,type=boolean,tag=🍪获取 emos token,desc=是否启用此处修改
+checkin = switch,true,type=boolean,tag=🥕emos签到,desc=是否启用此处修改
+comment = input,"签到,我要🥕",type=string,tag=💬自定义签到文案库,desc=多个文案用逗号分隔，随机选用
+ErrorNotify_emos = switch,false,type=boolean,tag=💬仅失败时通知,desc=开启后仅在出错时弹窗，成功和已签到只记日志
+cronExpression = input,"0 10 * * *",type=string,tag=⏰签到时间（建议错开高峰期）,desc=可手动更改脚本运行时间
+
+[Rule]
+DOMAIN,emos.best,PROXY
+
+[Script]
+request if ${url} ~= /^https:\/\/emos\.best\/api\//i then script("https://raw.githubusercontent.com/saga0924/Loon/main/emos.js", {${comment}, ${ErrorNotify_emos}}) with enable=${getToken}, tag="emos 获取 token"
+cron ${cronExpression} then script("https://raw.githubusercontent.com/saga0924/Loon/main/emos.js", {${comment}, ${ErrorNotify_emos}}) with enable=${checkin}, timeout=90, tag="🥕emos签到"
+
+[Mitm]
+hostname = emos.best
